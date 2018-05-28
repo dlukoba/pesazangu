@@ -47,8 +47,8 @@ namespace pesazangu
             {
                 routes.MapRoute(
                     name: "default",
-                    //template: "{controller=Home}/{action=Index}/{id?}");
-                    template: "{controller=Loan}/{action=Compare}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
+                    //template: "{controller=Loan}/{action=Compare}/{id?}");
             });
         }
     }

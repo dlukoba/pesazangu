@@ -33,9 +33,10 @@ namespace pesazangu.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Compare(CompareViewModel model) 
         {
-            
+
 
             return View();
         }

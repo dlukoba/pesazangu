@@ -12,7 +12,8 @@ namespace pesazangu.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Compare", "Loan");
+            //return View();
         }
 
         public IActionResult About()

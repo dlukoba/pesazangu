@@ -24,7 +24,7 @@ namespace pesazangu
             services.AddMvc();
             services.AddProgressiveWebApp(new WebEssentials.AspNetCore.Pwa.PwaOptions 
             {
-                OfflineRoute = "/shared/offline/",
+                OfflineRoute = "/Home/offline/",
                 RegisterServiceWorker = true
             });
         }

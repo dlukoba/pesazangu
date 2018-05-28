@@ -31,5 +31,13 @@ namespace pesazangu.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Compare(CompareViewModel model) 
+        {
+            
+
+            return View();
+        }
     }
 }

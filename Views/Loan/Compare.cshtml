@@ -5,8 +5,8 @@
 }
 <h2>@ViewData["Title"]</h2>
 
-@using (Html.BeginForm("Compare", "Loan", FormMethod.Post, null)) 
-{
+<form asp-action="Compare" asp-controller="Loan" data-ajax="true" data-ajax-method="POST" id="frmCompareLoan" data-ajax-success="OnSuccess">
+
     @Html.AntiForgeryToken()
 
     <div class="form-group">
@@ -31,5 +31,31 @@
         </div>
     </div>
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <button type="submit" class="btn btn-primary">Compare</button>
-}
+    <button type="submit" class="btn btn-primary" id="btnCompare">Compare</button>
+</form>
+
+<div id="divCompareResult"></div>
+
+@section Scripts {
+    <script type="text/javascript">  
+        $(document).ready(function() {
+            $("#frmCompareLoan").submit(function(e) {
+                e.preventDefault();
+                $("#btnCompare").attr("disabled", true)
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Loan/Compare",
+                    cache: false,
+                    data: $(this).serialize()
+                }).done(function(data) {
+                    $("#btnCompare").attr("disabled", false)
+                    $("#divCompareResult").replaceWith(data)
+                }).fail(function() {
+                    $("#btnCompare").attr("disabled", false)
+                    alert("fail")
+                })
+            })
+        })
+    </script>
+}  

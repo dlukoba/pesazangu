@@ -34,11 +34,15 @@ namespace pesazangu.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ResponseCache(NoStore = true, Duration = 0)]
         public IActionResult Compare(CompareViewModel model) 
         {
+            var response = new CompareResultViewModel
+            {
+                LoanAmount = model.LoanAmount
+            };
 
-
-            return View();
+            return PartialView("PartialCompare", response);
         }
     }
 }

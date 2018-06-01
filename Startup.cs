@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using pesazangu.Models;
 
 namespace pesazangu
 {
@@ -27,6 +28,8 @@ namespace pesazangu
                 OfflineRoute = "/Home/offline/",
                 RegisterServiceWorker = true
             });
+            services.AddSingleton<IRepository, InMemoryRepository>();
+            services.AddScoped<IScoreProductSuitability, LeastInterestProductSuitabilityScorer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

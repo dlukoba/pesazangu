@@ -1,5 +1,29 @@
-@model pesazangu.Models.CompareResultViewModel
+@model IEnumerable<pesazangu.Models.CompareResultViewModel>
 
 <div id="divCompareResult">
-    @Model.LoanAmount
+    <table>
+        <thead>
+            <tr>
+                <th>Vendor</th>
+                <th>Product</th>
+                <th>Loan Amount</th>
+                <th>Repayable Amount</th>
+                <th>Max Days</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.VendorName</td>
+                    <td>@item.ProductShortDesc</td>
+                    <td>@item.LoanAmount</td>
+                    <td>@item.RepayableAmount.ToString("#.00")</td>
+                    <td>@item.MaxRepaymentPeriodInDays</td>
+                    <td>@item.Score.ToString("#.00")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

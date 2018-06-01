@@ -3,16 +3,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
 using pesazangu.Models;
+using System.Linq;
 
 namespace pesazangu.Controllers
 {
     public class LoanController : Controller
     {
         readonly IScoreProductSuitability scoreProductSuitability;
+        readonly IRepository repository;
 
-        public LoanController(IScoreProductSuitability scoreProductSuitability)
+        public LoanController(IScoreProductSuitability scoreProductSuitability, IRepository repository)
         {
             this.scoreProductSuitability = scoreProductSuitability;
+            this.repository = repository;
         }
 
         public IActionResult Index()
@@ -42,18 +45,26 @@ namespace pesazangu.Controllers
         [ResponseCache(NoStore = true, Duration = 0)]
         public IActionResult Compare(CompareViewModel model) 
         {
-            var response = new CompareResultViewModel
-            {
-                LoanAmount = model.LoanAmount
-            };
-
-            var values = scoreProductSuitability.Score(null, new LoanConstraints()
+            var values = scoreProductSuitability.Score(repository.Products, new LoanConstraints()
             {
                 Amount = model.LoanAmount,
                 RepaymentPeriodInDays = model.PaybackDuration
             });
 
-            return PartialView("PartialCompare", response);
+            var viewModel = values.Join(repository.Vendors, c => c.Product.VendorId, v => v.Id, (c, d) =>
+            new CompareResultViewModel
+            {
+                VendorId = d.Id,
+                VendorName = d.Name,
+                ProductId = c.Product.Id,
+                ProductShortDesc = c.Product.ShortDesc,
+                LoanAmount = model.LoanAmount,
+                RepayableAmount = c.Product.GetRepayableAmount(model.LoanAmount),
+                Score = c.Score,
+                MaxRepaymentPeriodInDays = c.Product.RepaymentPeriodInDays
+            });
+
+            return PartialView("PartialCompare", viewModel);
         }
     }
 }

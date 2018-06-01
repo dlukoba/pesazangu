@@ -8,7 +8,12 @@ namespace pesazangu.Controllers
 {
     public class LoanController : Controller
     {
-        public LoanController() { }
+        readonly IScoreProductSuitability scoreProductSuitability;
+
+        public LoanController(IScoreProductSuitability scoreProductSuitability)
+        {
+            this.scoreProductSuitability = scoreProductSuitability;
+        }
 
         public IActionResult Index()
         {
@@ -41,6 +46,12 @@ namespace pesazangu.Controllers
             {
                 LoanAmount = model.LoanAmount
             };
+
+            var values = scoreProductSuitability.Score(null, new LoanConstraints()
+            {
+                Amount = model.LoanAmount,
+                RepaymentPeriodInDays = model.PaybackDuration
+            });
 
             return PartialView("PartialCompare", response);
         }

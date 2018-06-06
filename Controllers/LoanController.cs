@@ -34,6 +34,7 @@ namespace pesazangu.Controllers
             };
             var model = new CompareViewModel 
             {
+                PaybackDurationType = 1,
                 PaybackDurationTypes = items
             };
 
